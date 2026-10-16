@@ -1,0 +1,16 @@
+graph TD
+    subgraph Data & Definitions
+        data[data/ <br/> Raw Dataset & Corpora] --> baseline[baseline.py <br/> Baseline Model & Metrics]
+        labels[labels_template.csv / label_definitions.txt <br/> Label Schemas] --> baseline
+        agreement[agreement.py <br/> Inter-Annotator Agreement] --> labels
+    end
+
+    subgraph Notebook & Evaluation
+        notebook[takemeter.ipynb <br/> Interactive Notebook Pipeline] --> baseline
+        notebook --> agreement
+        test[test.py <br/> Environment & Integration Tests] --> notebook
+    end
+
+    subgraph Config & Support
+        config[requirements.txt / criteria.md <br/> Dependencies & Rubric] -.-> notebook
+    end
