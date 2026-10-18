@@ -21,3 +21,29 @@ Our taxonomy breaks down reviews into three distinct styles to ensure clear boun
 ## 4. Decision Rules & Hard Boundaries
 * **Nuanced Critique vs. Blind Hype:** If a review expresses strong emotion (positive or negative) *without* qualifying it with secondary considerations (e.g., praising the acting while criticizing the script), it belongs in `blind_hype_or_rant`.
 * **Factual Summary vs. Critique:** If a review spends more than 50% of its text describing plot beats, character movements, or backstory synopsis without evaluating quality, it must be labeled `factual_summary_recap`, even if the user provides a star rating.
+
+---
+
+## 5. Milestone 2: Refined Label Definitions & Examples
+
+### Label 1: `nuanced_critique`
+* **Definition:** A thoughtful, balanced review that weighs both positive and negative aspects of a film while grounding its critique in specific technical elements (e.g., acting, pacing, or cinematography).
+* **Example 1:** "While the cinematography and lighting were genuinely breathtaking, the third-act pacing completely fell apart and ruined the character arcs."
+* **Example 2:** "The lead actor delivered a career-best performance, though the supporting cast felt wooden and uninspired."
+
+### Label 2: `blind_hype_or_rant`
+* **Definition:** An extreme emotional review featuring pure gushing praise or furious hatred without structural balance or deep technical analysis.
+* **Example 1:** "Absolute masterpiece! A timeless classic that everyone needs to watch immediately. 10/10!"
+* **Example 2:** "Worst movie ever made. Total trash that wasted two hours of my life. Avoid at all costs!"
+
+### Label 3: `factual_summary_recap`
+* **Definition:** A review that focuses primarily on summarizing plot progression, setting, or narrative events without offering subjective value judgments.
+* **Example 1:** "The film opens with a high-stakes bank robbery before flashing back to explain how the crew assembled over three years."
+* **Example 2:** "Set in a dystopian future, society is divided into rigid factions until a young rebel discovers a hidden truth about the government."
+
+---
+
+## 6. Borderline Case & Decision Rule
+* **Borderline Post:** *"The movie started with a robbery sequence and had terrible pacing in the second half."*
+* **Competing Labels:** `factual_summary_recap` vs. `nuanced_critique`
+* **Decision Rule:** If the post evaluates quality or expresses a critical judgment (e.g., "terrible pacing"), it is classified as `nuanced_critique`, even if it mentions a factual plot element like an opening sequence.
