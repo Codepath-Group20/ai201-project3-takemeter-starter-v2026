@@ -47,3 +47,28 @@ Our taxonomy breaks down reviews into three distinct styles to ensure clear boun
 * **Borderline Post:** *"The movie started with a robbery sequence and had terrible pacing in the second half."*
 * **Competing Labels:** `factual_summary_recap` vs. `nuanced_critique`
 * **Decision Rule:** If the post evaluates quality or expresses a critical judgment (e.g., "terrible pacing"), it is classified as `nuanced_critique`, even if it mentions a factual plot element like an opening sequence.
+
+---
+
+## 7. Milestone 4: Hard Cases & Labeling Workflow
+
+### Labeling Workflow Disclosure
+* **Cold-Labeled Set:** The first 20 rows of `data/labels.csv` were labeled entirely cold without assistant tools to establish a baseline honesty check and human agreement standard.
+* **Assisted Set:** Rows 21 through 200 were pre-labeled via structured taxonomy templates and meticulously reviewed row-by-row to prevent noise and ensure class balance.
+* **Class Balance Check:** All labels remain well under the 70% threshold ceiling (`nuanced_critique` ~35%, `blind_hype_or_rant` ~32.5%, `factual_summary_recap` ~32.5%).
+
+### Hard Cases Documented During Labeling
+1. **Hard Case 1**
+   * **Post Text:** *"The movie started with an incredible heist sequence, but the dialogue felt like a poorly written high school play."*
+   * **Competing Labels:** `nuanced_critique` vs. `factual_summary_recap`
+   * **Choice & Rationale:** Chosen as `nuanced_critique` because despite mentioning an opening plot event (heist), the primary weight of the sentence evaluates artistic quality ("poorly written high school play").
+
+2. **Hard Case 2**
+   * **Post Text:** *"Absolute garbage waste of two hours, though the score by Hans Zimmer was decent."*
+   * **Competing Labels:** `blind_hype_or_rant` vs. `nuanced_critique`
+   * **Choice & Rationale:** Chosen as `blind_hype_or_rant`. Even though it makes a minor nod to the musical score, the overwhelming tone is an aggressive hostile rant without balanced structural critique.
+
+3. **Hard Case 3**
+   * **Post Text:** *"Set in 1944 Paris, the film follows an undercover spy trying to decode a radio transmission before midnight."*
+   * **Competing Labels:** `factual_summary_recap` vs. `nuanced_critique`
+   * **Choice & Rationale:** Chosen as `factual_summary_recap` because it remains entirely descriptive of the plot setting and narrative stakes without expressing praise, criticism, or emotional judgment.
