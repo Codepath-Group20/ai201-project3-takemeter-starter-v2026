@@ -51,63 +51,43 @@ whether you hit them:
 
 ---
 
-## 1.
+## 1. Overall Accuracy
 
-<!-- Your criterion. It must name a number. -->
+**Criterion:** The model achieves an overall classification accuracy of at least 0.65 across the held-out test split, evaluated consistently across all three training seeds.
 
-
-
-**Why this target:**
-
-
+**Why this target:** With three balanced labels, a random guesser sits around 0.33 accuracy. A threshold of 0.65 doubles random performance and ensures the model is capturing meaningful patterns in IMDb writing styles rather than just guessing the majority class.
 
 ---
 
-## 2.
+## 2. Per-Label Performance (Minority Class F1)
 
-<!-- Your criterion. -->
+**Criterion:** The smallest label, `factual_summary_recap` (approx. 65 examples), achieves a minimum F1-score of 0.50 on the held-out test set.
 
-
-
-**Why this target:**
-
-
+**Why this target:** Because `factual_summary_recap` has fewer samples, only a small handful land in the test split per seed, making its score naturally jumpy. Setting 0.50 accounts for this sample variance while still demanding that the model doesn't completely ignore the class.
 
 ---
 
-## 3.
+## 3. Per-Label Performance (Majority Class F1)
 
-<!-- Your criterion. -->
+**Criterion:** The largest label, `nuanced_critique` (approx. 70 examples), achieves a minimum F1-score of 0.65 across all evaluation seeds.
 
-
-
-**Why this target:**
-
-
+**Why this target:** Since this is our most frequent category and features distinct technical/balanced keywords, the model has more training signal to learn from, so a higher F1 bar of 0.65 is expected to ensure reliable detection.
 
 ---
 
-## 4.
+## 4. Class Balance / Distribution Guardrail
 
-<!-- Your criterion. -->
+**Criterion:** The ratio between the most frequent predicted label and the least frequent predicted label on the test set does not exceed 2.0 to 1.
 
-
-
-**Why this target:**
-
-
+**Why this target:** Our training labels are tightly balanced (~70, ~65, ~65). If the model's predictions skew heavily toward one class, it indicates a collapse or severe bias rather than a true reflection of the underlying IMDb review taxonomy.
 
 ---
 
-## 5.
+## 5. Confidence Calibration
 
-<!-- Your criterion. -->
+**Criterion:** Predictions made with high model confidence (probability greater than 0.80) achieve an accuracy of at least 0.80.
 
-
-
-**Why this target:**
-
-
+**Why this target:** A trustworthy classifier should be more accurate when it is certain. If high-confidence predictions are frequently wrong, the model's internal probability calibration is untrustworthy for practical deployment.
 
 ---
 
