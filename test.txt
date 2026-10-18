@@ -1,0 +1,32 @@
+
+AI201 environment check
+------------------------------------------------------------
+[PASS] Python version
+         3.11.13 on Linux
+[FAIL] Virtual environment
+         Not active. Run the activate command for your OS, then try again. Installing into your system Python is the most common cause of 'it worked yesterday'.
+[FAIL] Pinned packages
+         Could not import: pandas (ModuleNotFoundError), transformers (ModuleNotFoundError), datasets (ModuleNotFoundError), accelerate (ModuleNotFoundError), torch (ModuleNotFoundError), scikit-learn (ModuleNotFoundError)
+         Fix: pip install -r requirements.txt
+[PASS] Free disk space
+         494.7 GB
+[PASS] Memory
+         7.4 GB
+[FAIL] PyTorch
+         Not installed. Run: pip install -r requirements.txt
+[FAIL] Training packages
+         Missing: datasets, accelerate. Run: pip install -r requirements.txt
+[FAIL] Transformers
+         Could not import: No module named 'transformers'
+[WARN] Baseline model
+         Not downloaded yet (~1.6 GB). It downloads on your first run of
+         baseline.py. Do that BEFORE the unit 6 session, not during it.
+[PASS] Project files
+         notebook, scripts and practice data all present
+------------------------------------------------------------
+4 passed, 5 failed, 1 to look at, 0 skipped
+
+Not ready yet. Fix the FAIL lines above, then run test.py again.
+Still stuck after one honest attempt? Post the whole output in the
+help channel — the day before class, not the morning of.
+
