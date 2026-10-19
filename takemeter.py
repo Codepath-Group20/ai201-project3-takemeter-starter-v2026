@@ -1,0 +1,559 @@
+# Everything this notebook needs is already in requirements.txt — you installed
+# it when you set the project up. This cell just says what you're running on.
+
+import torch
+
+
+def pick_device():
+    """
+    Where training will run. Fastest first.
+
+    `cuda`  an NVIDIA GPU.
+    `mps`   Apple Silicon's GPU — M1 and later. Much faster than the CPU path.
+    `cpu`   everything else. Slower, and it works: this dataset is small enough
+            that a full three-seed run is minutes, not hours.
+    """
+    if torch.cuda.is_available():
+        return "cuda", torch.cuda.get_device_name(0)
+    if getattr(torch.backends, "mps", None) and torch.backends.mps.is_available():
+        return "mps", "Apple Silicon GPU (MPS)"
+    return "cpu", "CPU"
+
+
+DEVICE, DEVICE_NAME = pick_device()
+
+print(f"device: {DEVICE}  ({DEVICE_NAME})")
+print(f"torch:  {torch.__version__}")
+print()
+print("⚠️  WRITE THIS DOWN. Your results depend on it.")
+print()
+print("Two people running this notebook on the same data with the same seed can")
+print("get different numbers, because different hardware does the arithmetic in")
+print("a slightly different order. That is not a bug and it is not one of you")
+print("being wrong — it is a real property of the thing you are building, and")
+print("unit 6 asks you to report it alongside your three seeds.")
+
+# ── FILL THIS IN ─────────────────────────────────────────────────────────────
+
+NAME  = "Your Name"          # only used to label your results
+EMAIL = "you@example.com"    # same — nothing here talks to GitHub
+
+# ─────────────────────────────────────────────────────────────────────────────
+import os
+from pathlib import Path
+
+# This notebook runs from inside your own repo, so there is nothing to clone
+# and nothing to authenticate. Everything it writes lands next to your code and
+# you commit it the same way you commit anything else.
+REPO_DIR = Path.cwd()
+
+expected = ["data/labels.csv", "criteria.md", "baseline.py"]
+missing = [f for f in expected if not (REPO_DIR / f).exists()]
+
+if missing and (REPO_DIR / "takemeter.ipynb").exists():
+    print(f"Working in: {REPO_DIR}")
+    print(f"[note] not found yet: {', '.join(missing)}")
+    print("       labels.csv is Milestone 4 — that's expected before then.")
+elif missing:
+    print("This notebook expects to be run from inside your project folder.")
+    print(f"It is currently running in: {REPO_DIR}")
+    print("Open the notebook from the repo you cloned, not from a copy.")
+else:
+    print(f"Working in: {REPO_DIR}")
+    print(f"Results will be labelled: {NAME} <{EMAIL}>")
+    for f in sorted(os.listdir(REPO_DIR)):
+        if not f.startswith("."):
+            print(f"  {f}")
+
+# ── FILL THIS IN ─────────────────────────────────────────────────────────────
+
+# Your labels, exactly as they appear in the `label` column of your CSV.
+#LABELS = ["analysis", "hot_take", "reaction"]
+LABELS = ["nuanced_critique", "blind_hype_or_rant", "factual_summary_recap"]
+
+# The model you're fine-tuning. Leave this unless you have a reason.
+BASE_MODEL = "distilbert-base-uncased"
+
+# ── Training settings ────────────────────────────────────────────────────────
+# These are the defaults. Hyperparameters are vocabulary this unit, not
+# decisions — if you change one, write down what and why in your README.
+
+EPOCHS = 3
+LEARNING_RATE = 2e-5
+BATCH_SIZE = 16
+
+# How many tokens of each post the model reads. Anything longer is truncated,
+# anything shorter is padded up to it — so this is really "how much work per
+# post", and it costs time and memory whether your posts are that long or not.
+#
+# 128 covers almost every post in a corpus like this. Raising it to 256 roughly
+# doubles both the time and the memory for text most people don't have.
+MAX_LENGTH = 128
+
+# ── The seed ─────────────────────────────────────────────────────────────────
+# This fixes which posts land in which split. Change it and you get a different
+# split and different numbers.
+#
+# ⚠️ NEXT UNIT YOU CHANGE THIS THREE TIMES. That's not busywork — it's how you
+# find out whether your number is real or whether you got a friendly draw.
+
+SEED = 42
+
+print(f"{len(LABELS)} labels: {', '.join(LABELS)}")
+print(f"seed {SEED}, {EPOCHS} epochs, lr {LEARNING_RATE}, batch {BATCH_SIZE}")
+
+import pandas as pd
+
+CSV = "data/labels.csv"              # "data/practice_labels.csv" to practise
+
+df = pd.read_csv(CSV)
+
+print(f"Loaded {CSV}: {len(df)} rows")
+print(f"Columns: {', '.join(df.columns)}")
+
+def check_dataset(df, labels):
+    """
+    Look for the things that break a training run or quietly ruin it.
+
+    Returns (problems, warnings). Problems stop you; warnings are worth reading.
+    """
+    problems, warnings = [], []
+
+    for column in ("text", "label"):
+        if column not in df.columns:
+            problems.append(f"No '{column}' column. Found: {', '.join(df.columns)}")
+    if problems:
+        return problems, warnings
+
+    blank = df["text"].isna().sum() + (df["text"].astype(str).str.strip() == "").sum()
+    if blank:
+        problems.append(f"{blank} rows have an empty text column.")
+
+    found = set(df["label"].dropna().astype(str).str.strip().unique())
+    expected = set(labels)
+
+    unknown = found - expected
+    if unknown:
+        problems.append(
+            f"Labels in your CSV that aren't in LABELS: {sorted(unknown)}. "
+            f"Check capitals and spaces — 'Hot_take' and 'hot_take' are different."
+        )
+
+    unused = expected - found
+    if unused:
+        warnings.append(f"Labels in LABELS that never appear in your CSV: {sorted(unused)}")
+
+    counts = df["label"].value_counts()
+    total = len(df)
+    for label, count in counts.items():
+        share = count / total
+        if share > 0.70:
+            problems.append(
+                f"'{label}' is {share:.0%} of your data. The brief caps this at 70% — "
+                f"above that the model learns to guess it. Collect more of the thin labels."
+            )
+        elif share > 0.60:
+            warnings.append(f"'{label}' is {share:.0%} of your data. Getting lopsided.")
+
+    if total < 150:
+        warnings.append(
+            f"{total} rows. The brief's floor for a submission is 150 and it asks "
+            f"for 200. Training will still run — this is fine for the practice "
+            f"data, and something to fix before you submit."
+        )
+    elif total < 200:
+        warnings.append(f"{total} rows — under the 200 the brief asks for. Say so in your README.")
+
+    duplicates = df["text"].duplicated().sum()
+    if duplicates:
+        warnings.append(
+            f"{duplicates} duplicate posts. They'll land in different splits and "
+            f"inflate your score — that's leakage."
+        )
+
+    for label, count in counts.items():
+        if count < 20:
+            warnings.append(
+                f"Only {count} examples of '{label}'. Its test split will be tiny, "
+                f"so its F1 will jump around between seeds."
+            )
+
+    return problems, warnings
+
+
+problems, warnings = check_dataset(df, LABELS)
+
+for w in warnings:
+    print(f"[look at]  {w}")
+for p in problems:
+    print(f"[FIX ME]   {p}")
+
+if not problems:
+    print("\nData looks fine.")
+    print()
+    print(df["label"].value_counts().to_string())
+else:
+    print("\nFix the [FIX ME] lines before training.")
+
+from sklearn.model_selection import train_test_split
+
+
+def split_dataset(df, seed, test_size=0.15, val_size=0.15):
+    """
+    Stratified 70/15/15. Returns (train, val, test) DataFrames.
+
+    Stratifying falls back to a plain random split if any label is too rare to
+    stratify on — that's a warning sign about the dataset, not about the split.
+    """
+    def _stratify_on(frame):
+        counts = frame["label"].value_counts()
+        return frame["label"] if counts.min() >= 2 else None
+
+    rest, test = train_test_split(
+        df, test_size=test_size, random_state=seed, stratify=_stratify_on(df)
+    )
+    val_share = val_size / (1 - test_size)
+    train, val = train_test_split(
+        rest, test_size=val_share, random_state=seed, stratify=_stratify_on(rest)
+    )
+    return (
+        train.reset_index(drop=True),
+        val.reset_index(drop=True),
+        test.reset_index(drop=True),
+    )
+
+
+def describe_splits(train, val, test, labels):
+    """A table of per-label counts per split, and a note on the thin ones."""
+    import pandas as pd
+
+    table = pd.DataFrame({
+        "train": train["label"].value_counts(),
+        "val": val["label"].value_counts(),
+        "test": test["label"].value_counts(),
+    }).reindex(labels).fillna(0).astype(int)
+
+    thin = [label for label in labels if table.loc[label, "test"] < 8]
+    return table, thin
+
+
+train_df, val_df, test_df = split_dataset(df, SEED)
+table, thin = describe_splits(train_df, val_df, test_df, LABELS)
+
+print(f"train {len(train_df)}  ·  val {len(val_df)}  ·  test {len(test_df)}\n")
+print(table.to_string())
+
+if thin:
+    print()
+    for label in thin:
+        n = table.loc[label, "test"]
+        print(f"[note] '{label}' has only {n} examples in the test split.")
+    print()
+    print("A metric computed on that few examples moves a lot between seeds.")
+    print("Write that down now — next unit it's a diagnosis, not a surprise.")
+
+import numpy as np
+from datasets import Dataset
+from transformers import (
+    AutoTokenizer, AutoModelForSequenceClassification,
+    TrainingArguments, Trainer, set_seed,
+)
+from sklearn.metrics import accuracy_score, f1_score, precision_recall_fscore_support
+
+
+def to_ids(df, labels):
+    """Map label strings to the integer ids the model wants."""
+    lookup = {label: i for i, label in enumerate(labels)}
+    out = df.copy()
+    out["labels"] = out["label"].astype(str).str.strip().map(lookup)
+    return out[["text", "labels"]]
+
+
+def compute_metrics(eval_pred):
+    logits, gold = eval_pred
+    predicted = np.argmax(logits, axis=-1)
+    return {
+        "accuracy": accuracy_score(gold, predicted),
+        "f1_macro": f1_score(gold, predicted, average="macro", zero_division=0),
+    }
+
+
+def train_model(train_df, val_df, labels, seed, epochs, learning_rate, batch_size,
+                base_model, quiet=False):
+    """Fine-tune and return (trainer, tokenizer)."""
+    set_seed(seed)
+
+    tokenizer = AutoTokenizer.from_pretrained(base_model)
+    model = AutoModelForSequenceClassification.from_pretrained(
+        base_model,
+        num_labels=len(labels),
+        id2label={i: l for i, l in enumerate(labels)},
+        label2id={l: i for i, l in enumerate(labels)},
+    )
+
+    def tokenize(batch):
+        return tokenizer(batch["text"], truncation=True, padding="max_length", max_length=MAX_LENGTH)
+
+    train_ds = Dataset.from_pandas(to_ids(train_df, labels)).map(tokenize, batched=True)
+    val_ds = Dataset.from_pandas(to_ids(val_df, labels)).map(tokenize, batched=True)
+
+    args = TrainingArguments(
+        output_dir="./takemeter_out",
+        num_train_epochs=epochs,
+        learning_rate=learning_rate,
+        per_device_train_batch_size=batch_size,
+        per_device_eval_batch_size=batch_size,
+        eval_strategy="epoch",
+        save_strategy="no",
+        logging_steps=10,
+        seed=seed,
+        report_to="none",
+        disable_tqdm=quiet,
+    )
+
+    trainer = Trainer(
+        model=model,
+        args=args,
+        train_dataset=train_ds,
+        eval_dataset=val_ds,
+        compute_metrics=compute_metrics,
+    )
+    trainer.train()
+    return trainer, tokenizer
+
+
+trainer, tokenizer = train_model(
+    train_df, val_df, LABELS, SEED, EPOCHS, LEARNING_RATE, BATCH_SIZE, BASE_MODEL
+)
+print("\nTrained.")
+
+import json
+
+
+def evaluate(trainer, tokenizer, test_df, labels, seed=None):
+    """Score the model on the held-out split. Returns a plain dict."""
+    from datasets import Dataset
+
+    def tokenize(batch):
+        return tokenizer(batch["text"], truncation=True, padding="max_length", max_length=MAX_LENGTH)
+
+    test_ds = Dataset.from_pandas(to_ids(test_df, labels)).map(tokenize, batched=True)
+    output = trainer.predict(test_ds)
+
+    predicted = np.argmax(output.predictions, axis=-1)
+    gold = np.array(output.label_ids)
+
+    # How sure the model was about each guess. Softmax over the raw scores, then
+    # the winning one. A criterion about confidence can't be tested without it.
+    scores = output.predictions
+    exp = np.exp(scores - scores.max(axis=-1, keepdims=True))
+    confidence = (exp / exp.sum(axis=-1, keepdims=True)).max(axis=-1)
+
+    precision, recall, f1, support = precision_recall_fscore_support(
+        gold, predicted, labels=list(range(len(labels))), zero_division=0
+    )
+
+    return {
+        "seed": seed,
+        "n_test": int(len(gold)),
+        "accuracy": float(accuracy_score(gold, predicted)),
+        "f1_macro": float(f1_score(gold, predicted, average="macro", zero_division=0)),
+        "per_label": {
+            label: {
+                "precision": float(precision[i]),
+                "recall": float(recall[i]),
+                "f1": float(f1[i]),
+                "support": int(support[i]),
+            }
+            for i, label in enumerate(labels)
+        },
+        "confusion": confusion_counts(gold, predicted, labels),
+        "confidence": confidence_report(confidence, gold, predicted),
+    }
+
+
+def confidence_report(confidence, gold, predicted):
+    """
+    Are the model's confident guesses right more often than its unsure ones?
+
+    If you wrote a criterion about confidence, this is what tests it. If the
+    two thirds score about the same, the model's confidence means nothing —
+    which is itself worth writing down.
+    """
+    right = gold == predicted
+    ranked = np.argsort(confidence)
+    third = max(1, len(confidence) // 3)
+    least, most = ranked[:third], ranked[-third:]
+
+    return {
+        "mean_when_right": float(confidence[right].mean()) if right.any() else None,
+        "mean_when_wrong": float(confidence[~right].mean()) if (~right).any() else None,
+        "accuracy_most_confident_third": float(right[most].mean()),
+        "accuracy_least_confident_third": float(right[least].mean()),
+        "n_per_third": int(third),
+    }
+
+
+def confusion_counts(gold, predicted, labels):
+    """Rows are true labels, columns are guesses. Plain nested dict."""
+    matrix = {t: {p: 0 for p in labels} for t in labels}
+    for g, p in zip(gold, predicted):
+        matrix[labels[int(g)]][labels[int(p)]] += 1
+    return matrix
+
+
+results = evaluate(trainer, tokenizer, test_df, LABELS, seed=SEED)
+
+# The device goes in the file, not just the console. Next unit you compare your
+# numbers against your own other seeds and against other people's — and you
+# cannot read a difference you can't attribute.
+results["device"] = DEVICE
+results["device_name"] = DEVICE_NAME
+results["torch_version"] = torch.__version__
+results["max_length"] = MAX_LENGTH
+
+with open("results.json", "w") as f:
+    json.dump(results, f, indent=2)
+
+# The held-out posts themselves, for next unit's baseline to score.
+test_df.to_csv("test_split.csv", index=False)
+
+print(f"accuracy  {results['accuracy']:.3f}")
+print(f"macro F1  {results['f1_macro']:.3f}\n")
+for label, scores in results["per_label"].items():
+    print(f"  {label:<16} F1 {scores['f1']:.3f}   (n={scores['support']})")
+
+c = results["confidence"]
+print(f"\nconfidence   most-sure third {c['accuracy_most_confident_third']:.3f}"
+      f"   ·   least-sure third {c['accuracy_least_confident_third']:.3f}")
+
+print()
+
+print("Wrote results.json and test_split.csv. Commit them both — they're the")
+print("evidence the run happened, and next unit reads test_split.csv.")
+
+
+SEEDS = [42, 7, 2024]
+
+# WARNING: change this to "after" before you re-run this cell in Milestone 5.
+#
+# Without it the improvement run overwrites your before-numbers, and the file
+# you committed as evidence quietly becomes the other set. Same idea as the
+# --label flag on the eval scripts in units 2 and 4.
+RUN_LABEL = "before"
+
+all_results = []
+
+for i, seed in enumerate(SEEDS, 1):
+    print(f"\n{'=' * 60}\nSeed {seed}  ({i} of {len(SEEDS)})\n{'=' * 60}")
+
+    tr, va, te = split_dataset(df, seed)
+    t, tok = train_model(
+        tr, va, LABELS, seed, EPOCHS, LEARNING_RATE, BATCH_SIZE, BASE_MODEL, quiet=True
+    )
+    r = evaluate(t, tok, te, LABELS, seed=seed)
+    all_results.append(r)
+
+    print(f"  accuracy {r['accuracy']:.3f}   macro F1 {r['f1_macro']:.3f}")
+
+OUT = f"results_three_seeds_{RUN_LABEL}.json"
+
+for r in all_results:
+    r["device"] = DEVICE
+    r["device_name"] = DEVICE_NAME
+    r["torch_version"] = torch.__version__
+    r["max_length"] = MAX_LENGTH
+
+with open(OUT, "w") as f:
+    json.dump(all_results, f, indent=2)
+
+print(f"\n\n{'=' * 60}\nAll three done.\n{'=' * 60}")
+print(f"Wrote {OUT}.")
+if RUN_LABEL == "before":
+    print('Re-running after your improvement? Set RUN_LABEL = \"after" first,')
+    print('or you will overwrite the numbers you are comparing against.')
+
+print(f"Wrote {OUT}. Commit it.")
+
+
+def spread_table(all_results, labels):
+    """A markdown table of every measure across every seed."""
+    seeds = [r["seed"] for r in all_results]
+    header = f"| Measure | {' | '.join(f'Seed {s}' for s in seeds)} | Spread |"
+    divider = "|---|" + "|".join(["---"] * (len(seeds) + 1)) + "|"
+    rows = [header, divider]
+
+    def row(name, values, fmt="{:.3f}"):
+        spread = max(values) - min(values)
+        cells = " | ".join(fmt.format(v) for v in values)
+        return f"| {name} | {cells} | {fmt.format(spread)} |"
+
+    rows.append(row("Overall accuracy", [r["accuracy"] for r in all_results]))
+    rows.append(row("Macro F1", [r["f1_macro"] for r in all_results]))
+    for label in labels:
+        rows.append(row(f"F1 — `{label}`",
+                        [r["per_label"][label]["f1"] for r in all_results]))
+    return "\n".join(rows)
+
+
+def stability_note(all_results):
+    """Say plainly whether the spread makes these numbers trustworthy."""
+    accuracies = [r["accuracy"] for r in all_results]
+    spread = max(accuracies) - min(accuracies)
+    if spread > 0.10:
+        return (f"Accuracy moved {spread:.3f} across seeds — more than 10 points. "
+                f"Your dataset is too small or too lopsided for a stable measure. "
+                f"That IS a diagnosis. Write it down.")
+    if spread > 0.05:
+        return (f"Accuracy moved {spread:.3f} across seeds. Enough that a criterion "
+                f"landing within that band can't really be called either way.")
+    return f"Accuracy moved {spread:.3f} across seeds. Stable enough to trust."
+
+
+print(spread_table(all_results, LABELS))
+print()
+print(stability_note(all_results))
+
+def matrix_markdown(confusion, labels):
+    """The confusion matrix as a markdown table, ready to paste."""
+    header = f"| true \\ predicted | {' | '.join(labels)} |"
+    divider = "|---|" + "|".join(["---"] * len(labels)) + "|"
+    rows = [header, divider]
+    for true_label in labels:
+        cells = " | ".join(str(confusion[true_label][p]) for p in labels)
+        rows.append(f"| **{true_label}** | {cells} |")
+    return "\n".join(rows)
+
+
+def biggest_confusion(confusion, labels):
+    """The largest off-diagonal cell: (true, predicted, count)."""
+    worst = None
+    for true_label in labels:
+        for predicted in labels:
+            if true_label == predicted:
+                continue
+            count = confusion[true_label][predicted]
+            if worst is None or count > worst[2]:
+                worst = (true_label, predicted, count)
+    return worst
+
+
+confusion = all_results[0]["confusion"]
+
+print(matrix_markdown(confusion, LABELS))
+print()
+
+true_label, predicted, count = biggest_confusion(confusion, LABELS)
+reverse = confusion[predicted][true_label]
+
+print(f"Biggest confusion: {count} real `{true_label}` posts called `{predicted}`.")
+print(f"The other direction: {reverse} real `{predicted}` posts called `{true_label}`.")
+print()
+if count > reverse * 2 and count > 2:
+    print(f"That's lopsided — the model leans toward `{predicted}` on this pair.")
+    print(f"A direction like that usually points at your labelling rather than the")
+    print(f"model. Your agreement report is the thing that can tell you which.")
+else:
+    print("Roughly symmetric — the model finds this pair hard in both directions,")
+    print("which more often means the boundary itself is genuinely hard.")
+
