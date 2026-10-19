@@ -31,7 +31,7 @@ Our taxonomy breaks down reviews into three distinct styles to ensure clear boun
 * **Example 1:** "While the cinematography and lighting were genuinely breathtaking, the third-act pacing completely fell apart and ruined the character arcs."
 * **Example 2:** "The lead actor delivered a career-best performance, though the supporting cast felt wooden and uninspired."
 
-### Label 2: `blind_hype_or_rant`
+### Label 3: `blind_hype_or_rant`
 * **Definition:** An extreme emotional review featuring pure gushing praise or furious hatred without structural balance or deep technical analysis.
 * **Example 1:** "Absolute masterpiece! A timeless classic that everyone needs to watch immediately. 10/10!"
 * **Example 2:** "Worst movie ever made. Total trash that wasted two hours of my life. Avoid at all costs!"
@@ -55,7 +55,7 @@ Our taxonomy breaks down reviews into three distinct styles to ensure clear boun
 ### Labeling Workflow Disclosure
 * **Cold-Labeled Set:** The first 20 rows of `data/labels.csv` were labeled entirely cold without assistant tools to establish a baseline honesty check and human agreement standard.
 * **Assisted Set:** Rows 21 through 200 were pre-labeled via structured taxonomy templates and meticulously reviewed row-by-row to prevent noise and ensure class balance.
-* **Class Balance Check:** All labels remain well under the 70% threshold ceiling (`nuanced_critique` ~35%, `blind_hype_or_rant` ~32.5%, `factual_summary_recap` ~32.5%).
+* **Class Balance Check:** All labels remain well under the 70% threshold ceiling (`nuanced_critique` ~33.5%, `blind_hype_or_rant` ~33.5%, `factual_summary_recap` ~33.0%).
 
 ### Hard Cases Documented During Labeling
 1. **Hard Case 1**
@@ -72,3 +72,10 @@ Our taxonomy breaks down reviews into three distinct styles to ensure clear boun
    * **Post Text:** *"Set in 1944 Paris, the film follows an undercover spy trying to decode a radio transmission before midnight."*
    * **Competing Labels:** `factual_summary_recap` vs. `nuanced_critique`
    * **Choice & Rationale:** Chosen as `factual_summary_recap` because it remains entirely descriptive of the plot setting and narrative stakes without expressing praise, criticism, or emotional judgment.
+
+---
+
+## 8. Milestone 5: Training Execution & Device Disclosure
+* **Training Hardware / Device:** CPU (Intel Core i5 / Local Environment)
+* **Training Settings:** 3 Epochs, Learning Rate: `2e-5`, Batch Size: 16, Max Token Length: 128
+* **Artifacts Generated:** `results.json`, `test_split.csv`
