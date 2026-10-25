@@ -1,0 +1,19 @@
+(.venv) [leo@precision ai201-project3-takemeter-starter-v2026]$ python agreement.py
+Compared 30 posts.
+
+  agreed      30
+  disagreed   0
+  agreement   100%
+
+You matched staff on every post. Say so in your README — and say
+whether you think the set was easy or your rule is genuinely tight.
+
+Wrote agreement_results.json. Commit it.
+
+Then sort each disagreement into one of three piles:
+  (a) the rule covered it and you applied it loosely — a consistency problem
+  (b) the rule genuinely doesn't say — a gap in the definitions
+  (c) the rule is ambiguous here and your reading is defensible — argue it
+
+(b) and (c) are the interesting ones, and (c) is a legitimate win.
+(.venv) [leo@precision ai201-project3-takemeter-starter-v2026]$ 
