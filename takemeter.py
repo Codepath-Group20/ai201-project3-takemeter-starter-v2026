@@ -47,13 +47,13 @@ from pathlib import Path
 # you commit it the same way you commit anything else.
 REPO_DIR = Path.cwd()
 
-expected = ["data/labels.csv", "criteria.md", "baseline.py"]
+expected = ["data/practice_labels.csv", "criteria.md", "baseline.py"]
 missing = [f for f in expected if not (REPO_DIR / f).exists()]
 
 if missing and (REPO_DIR / "takemeter.ipynb").exists():
     print(f"Working in: {REPO_DIR}")
     print(f"[note] not found yet: {', '.join(missing)}")
-    print("       labels.csv is Milestone 4 — that's expected before then.")
+    print("       data/practice_labels.csv is Milestone 4 — that's expected before then.")
 elif missing:
     print("This notebook expects to be run from inside your project folder.")
     print(f"It is currently running in: {REPO_DIR}")
@@ -104,7 +104,7 @@ print(f"seed {SEED}, {EPOCHS} epochs, lr {LEARNING_RATE}, batch {BATCH_SIZE}")
 
 import pandas as pd
 
-CSV = "data/labels.csv"              # "data/practice_labels.csv" to practise
+CSV = "data/practice_labels.csv"              # "data/practice_labels.csv" to practise
 
 df = pd.read_csv(CSV)
 
