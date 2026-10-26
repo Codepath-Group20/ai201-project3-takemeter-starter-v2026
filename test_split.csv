@@ -1,31 +1,10 @@
 text,label,note
-Worst movie ever made. Total trash that wasted two hours of my life. Avoid at all costs! [Review #157],blind_hype_or_rant,AI-assisted verification (Row 157)
-"While the cinematography and lighting were genuinely breathtaking, the third-act pacing completely fell apart and ruined the character arcs. [Review #1]",nuanced_critique,Cold label check (Row 1)
-"The sound design was immersive and brilliant, though some dialogue mixing made lines hard to understand. [Review #95]",nuanced_critique,AI-assisted verification (Row 95)
-Mind-blowing brilliance! Changed my entire perspective on life. Perfection in every single way! [Review #84],blind_hype_or_rant,AI-assisted verification (Row 84)
-Absolute masterpiece! A timeless classic that everyone needs to watch immediately. 10/10! [Review #66],blind_hype_or_rant,AI-assisted verification (Row 66)
-The film opens with a high-stakes bank robbery before flashing back to explain how the crew assembled over three years. [Review #26],factual_summary_recap,AI-assisted verification (Row 26)
-"The sound design was immersive and brilliant, though some dialogue mixing made lines hard to understand. [Review #5]",nuanced_critique,Cold label check (Row 5)
-"After a mysterious crash on an uncharted planet, the surviving crew members must signal for rescue while dodging local fauna. [Review #150]",factual_summary_recap,AI-assisted verification (Row 150)
-Pure garbage. Anyone who gave this movie a positive review has zero taste in cinema. [Review #23],blind_hype_or_rant,AI-assisted verification (Row 23)
-"The main protagonist travels across Europe to recover a stolen artifact, encountering various obstacles along the way. [Review #57]",factual_summary_recap,AI-assisted verification (Row 57)
-"Directorially ambitious, but the script relied too heavily on exposition dumps rather than showing the story. [Review #3]",nuanced_critique,Cold label check (Row 3)
-Mind-blowing brilliance! Changed my entire perspective on life. Perfection in every single way! [Review #54],blind_hype_or_rant,AI-assisted verification (Row 54)
-"The lead actor delivered a career-best performance, though the supporting cast felt wooden and uninspired. [Review #107]",nuanced_critique,AI-assisted verification (Row 107)
-"A fascinating premise with strong atmospheric tension, hampered only by an overly predictable resolution. [Review #124]",nuanced_critique,AI-assisted verification (Row 124)
-"The lead actor delivered a career-best performance, though the supporting cast felt wooden and uninspired. [Review #182]",nuanced_critique,AI-assisted verification (Row 182)
-"The main protagonist travels across Europe to recover a stolen artifact, encountering various obstacles along the way. [Review #12]",factual_summary_recap,Cold label check (Row 12)
-"After a mysterious crash on an uncharted planet, the surviving crew members must signal for rescue while dodging local fauna. [Review #105]",factual_summary_recap,AI-assisted verification (Row 105)
-The film opens with a high-stakes bank robbery before flashing back to explain how the crew assembled over three years. [Review #116],factual_summary_recap,AI-assisted verification (Row 116)
-"After a mysterious crash on an uncharted planet, the surviving crew members must signal for rescue while dodging local fauna. [Review #120]",factual_summary_recap,AI-assisted verification (Row 120)
-An unmitigated disaster from start to finish. Offensively bad acting and writing. [Review #40],blind_hype_or_rant,AI-assisted verification (Row 40)
-Pure garbage. Anyone who gave this movie a positive review has zero taste in cinema. [Review #68],blind_hype_or_rant,AI-assisted verification (Row 68)
-"The main protagonist travels across Europe to recover a stolen artifact, encountering various obstacles along the way. [Review #147]",factual_summary_recap,AI-assisted verification (Row 147)
-"The sound design was immersive and brilliant, though some dialogue mixing made lines hard to understand. [Review #185]",nuanced_critique,AI-assisted verification (Row 185)
-Mind-blowing brilliance! Changed my entire perspective on life. Perfection in every single way! [Review #114],blind_hype_or_rant,AI-assisted verification (Row 114)
-Pure garbage. Anyone who gave this movie a positive review has zero taste in cinema. [Review #128],blind_hype_or_rant,AI-assisted verification (Row 128)
-The story follows a retired detective who is pulled back into one final case involving an old nemesis. [Review #14],factual_summary_recap,Cold label check (Row 14)
-"A fascinating premise with strong atmospheric tension, hampered only by an overly predictable resolution. [Review #34]",nuanced_critique,AI-assisted verification (Row 34)
-"The lead actor delivered a career-best performance, though the supporting cast felt wooden and uninspired. [Review #137]",nuanced_critique,AI-assisted verification (Row 137)
-The story follows a retired detective who is pulled back into one final case involving an old nemesis. [Review #44],factual_summary_recap,AI-assisted verification (Row 44)
-Pure garbage. Anyone who gave this movie a positive review has zero taste in cinema. [Review #173],blind_hype_or_rant,AI-assisted verification (Row 173)
+Just signed up for my first marathon and I'm equal parts excited and terrified.,reaction,provided practice data
+A sub-3 marathon is more impressive than most people's entire athletic career and runners undersell it constantly.,hot_take,provided practice data
+Got my entry! Been refreshing that page for forty minutes.,reaction,provided practice data
+Just watched someone in a full costume run past me at mile 20 and I've never felt worse about myself.,reaction,provided practice data
+Anyone running more than 60 miles a week without a coach is just accumulating injuries on a schedule.,hot_take,provided practice data
+"Split the field by finish time and looked at DNF rates. Under 3:30, about 1%. Over 5 hours, about 9%. The cutoff is at 6 hours and the aid stations start closing at 5:15, which might explain more of that than fitness does.",analysis,provided practice data
+Super shoes have ruined amateur racing. Times mean nothing now and everyone knows it.,hot_take,provided practice data
+Six of the last eight course records here were set in years when race-day temperature was under 10C. The two exceptions were both years with a strong tailwind on the back half. Weather explains more of the record book than the field does.,analysis,provided practice data
+The women's field here has grown 60% in five years while the men's is flat. That's the actual story of this race and nobody writes about it.,analysis,provided practice data
