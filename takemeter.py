@@ -35,8 +35,8 @@ print("unit 6 asks you to report it alongside your three seeds.")
 
 # ── FILL THIS IN ─────────────────────────────────────────────────────────────
 
-NAME  = "Your Name"          # only used to label your results
-EMAIL = "you@example.com"    # same — nothing here talks to GitHub
+NAME  = "Leo Shen"          # only used to label your results
+EMAIL = "leoyangshen@gmail.com"    # same — nothing here talks to GitHub
 
 # ─────────────────────────────────────────────────────────────────────────────
 import os
@@ -68,8 +68,8 @@ else:
 # ── FILL THIS IN ─────────────────────────────────────────────────────────────
 
 # Your labels, exactly as they appear in the `label` column of your CSV.
-#LABELS = ["analysis", "hot_take", "reaction"]
-LABELS = ["nuanced_critique", "blind_hype_or_rant", "factual_summary_recap"]
+LABELS = ["analysis", "hot_take", "reaction"]
+#LABELS = ["nuanced_critique", "blind_hype_or_rant", "factual_summary_recap"]
 
 # The model you're fine-tuning. Leave this unless you have a reason.
 BASE_MODEL = "distilbert-base-uncased"
