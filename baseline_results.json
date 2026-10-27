@@ -1,0 +1,79 @@
+{
+  "model": "facebook/bart-large-mnli",
+  "n": 9,
+  "seed": 42,
+  "held_out": true,
+  "used_definitions": true,
+  "scores": {
+    "n": 9,
+    "accuracy": 0.5555555555555556,
+    "f1_macro": 0.4666666666666666,
+    "per_label": {
+      "analysis": {
+        "precision": 0.42857142857142855,
+        "recall": 1.0,
+        "f1": 0.6,
+        "support": 3
+      },
+      "hot_take": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 3
+      },
+      "reaction": {
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "f1": 0.8,
+        "support": 3
+      }
+    }
+  },
+  "predictions": [
+    {
+      "text": "Just signed up for my first marathon and I'm equal parts excited and terrified.",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "A sub-3 marathon is more impressive than most people's entire athletic career and runners undersell it constantly.",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Got my entry! Been refreshing that page for forty minutes.",
+      "gold": "reaction",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Just watched someone in a full costume run past me at mile 20 and I've never felt worse about myself.",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Anyone running more than 60 miles a week without a coach is just accumulating injuries on a schedule.",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Split the field by finish time and looked at DNF rates. Under 3:30, about 1%. Over 5 hours, about 9%. The cutoff is at 6 hours and the aid stations start closing at 5:15, which might explain more of that than fitness does.",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Super shoes have ruined amateur racing. Times mean nothing now and everyone knows it.",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Six of the last eight course records here were set in years when race-day temperature was under 10C. The two exceptions were both years with a strong tailwind on the back half. Weather explains more of the record book than the field does.",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "The women's field here has grown 60% in five years while the men's is flat. That's the actual story of this race and nobody writes about it.",
+      "gold": "analysis",
+      "predicted": "analysis"
+    }
+  ]
+}

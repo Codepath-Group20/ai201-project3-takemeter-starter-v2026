@@ -1,0 +1,34 @@
+(.venv) [leo@HP-ProBook-6560b ai201-project3-takemeter-starter-v2026]$ python baseline.py --data data/practice_labels.csv --trained results.json
+Using your definitions from label_definitions.txt.
+Reading the held-out posts from test_split.csv — the same ones your
+trained model was scored on.
+
+Classifying 9 posts across 3 labels.
+A few seconds each — this is what no fine-tuning costs at runtime.
+
+Loading facebook/bart-large-mnli (first run downloads ~1.6 GB)…
+Device set to use cpu
+accuracy  0.556               
+macro F1  0.467
+
+  analysis         F1 0.600   (n=3)
+  hot_take         F1 0.000   (n=3)
+  reaction         F1 0.800   (n=3)
+
+
+Paste this into your README under **Baseline vs. Trained**:
+
+| Measure | Baseline | Trained | Difference |
+|---|---|---|---|
+| Overall accuracy | 0.556 | 0.667 | +0.111 |
+| Macro F1 | 0.467 | 0.556 | +0.089 |
+| F1 — `analysis` | 0.600 | 0.667 | +0.067 |
+| F1 — `hot_take` | 0.000 | 0.000 | +0.000 |
+| F1 — `reaction` | 0.800 | 1.000 | +0.200 |
+
+Wrote baseline_results.json. Commit it.
+
+Before you look at your trained model's numbers: write one sentence
+predicting where it will beat this. Milestone 1 asks for it, and a
+prediction made after the fact isn't one.
+(.venv) [leo@HP-ProBook-6560b ai201-project3-takemeter-starter-v2026]$ 
