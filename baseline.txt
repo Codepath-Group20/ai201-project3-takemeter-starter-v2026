@@ -7,23 +7,23 @@ A few seconds each — this is what no fine-tuning costs at runtime.
 
 Loading facebook/bart-large-mnli (first run downloads ~1.6 GB)…
 Device set to use cpu
-  1/10  2/10  3/10  4/10  5/10  6/10  7/10  8/10  9/10  10/10                              accuracy  0.300
-macro F1  0.154
+  1/10  2/10  3/10  4/10  5/10  6/10  7/10  8/10  9/10  10/10                              accuracy  0.500
+macro F1  0.417
 
-  blind_hype_or_rant F1 0.000   (n=3)
+  blind_hype_or_rant F1 0.750   (n=3)
   factual_summary_recap F1 0.000   (n=4)
-  nuanced_critique F1 0.462   (n=3)
+  nuanced_critique F1 0.500   (n=3)
 
 
 Paste this into your README under **Baseline vs. Trained**:
 
 | Measure | Baseline |
 |---|---|
-| Overall accuracy | 0.300 |
-| Macro F1 | 0.154 |
-| F1 — `blind_hype_or_rant` | 0.000 |
+| Overall accuracy | 0.500 |
+| Macro F1 | 0.417 |
+| F1 — `blind_hype_or_rant` | 0.750 |
 | F1 — `factual_summary_recap` | 0.000 |
-| F1 — `nuanced_critique` | 0.462 |
+| F1 — `nuanced_critique` | 0.500 |
 
 Wrote baseline_results.json. Commit it.
 

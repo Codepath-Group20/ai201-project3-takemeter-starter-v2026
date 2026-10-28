@@ -6,13 +6,13 @@
   "used_definitions": true,
   "scores": {
     "n": 10,
-    "accuracy": 0.3,
-    "f1_macro": 0.15384615384615383,
+    "accuracy": 0.5,
+    "f1_macro": 0.4166666666666667,
     "per_label": {
       "blind_hype_or_rant": {
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1": 0.0,
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.7499999999999999,
         "support": 3
       },
       "factual_summary_recap": {
@@ -22,9 +22,9 @@
         "support": 4
       },
       "nuanced_critique": {
-        "precision": 0.3,
-        "recall": 1.0,
-        "f1": 0.4615384615384615,
+        "precision": 0.4,
+        "recall": 0.6666666666666666,
+        "f1": 0.5,
         "support": 3
       }
     }
@@ -38,17 +38,17 @@
     {
       "text": "I bought this film at Blockbuster for $3.00, because it sounded interesting (a bit Ranma-esque, with the idea of someone dragging around a skeleton), because there was a cute girl in a mini-skirt on the back, and because there was a Restricted Viewing sticker on it. I thought it was going to be a sweet or at least sincere coming of age story with a weird indie edge. I was 100% wrong.<br /><br />Having watched it, I have to wonder how it got the restricted sticker, since there is hardly any foul language, little violence, and the closest thing to nudity (Honestly! I don't usually go around hoping for it!) is when the girl is in her nightgown and you see her panties (you see her panties a lot in this movie, because no matter what, she's wearing a miniskirt of some sort). Even the anti-religious humor is tame (and lame, caricatured, insincere, derivative, unoriginal, and worst of all not funny in the slightest--it would be better just to listen to Ray Stevens' \"Would Jesus Wear a Rolex on His Television Show\"). This would barely qualify as PG-13 (it is Not Rated), but Blockbuster refuses to let anyone under the age of 17 rent this--as if it was pornographic. Any little kid could go in there and rent the edited version of Requiem for a Dream, but they insist that Zack and Reba is worse.<br /><br />It is, but not in that way.<br /><br />In a way, this worries me--the only thing left that could offend people is the idea of the suicide at the beginning. If anybody needs to see movies with honestly portrayed suicides (not this one, but better ones like The Virgin Suicides), it's teenagers. If both of those movies were rated R purely because of the suicide aspect, then I have little chance of turning a story I've been writing into a PG-13 movie (the main characters are eleven and a half and twelve). Suicide is one of the top three leading causes of death in teenagers (I think it's number 2), so chances are that most teens have been or will be affected by it.<br /><br />Just say no to this movie, though. 2/10.",
       "gold": "blind_hype_or_rant",
-      "predicted": "nuanced_critique"
+      "predicted": "blind_hype_or_rant"
     },
     {
       "text": "Worst movie ever made. Total trash that wasted two hours of my life. Avoid at all costs! [Review #7]",
       "gold": "blind_hype_or_rant",
-      "predicted": "nuanced_critique"
+      "predicted": "blind_hype_or_rant"
     },
     {
       "text": "This film tried to be too many things all at once: stinging political satire, Hollywood blockbuster, sappy romantic comedy, family values promo... the list goes on and on. It failed miserably at all of them, but there was enough interest to keep me from turning it off until the end.<br /><br />Although I appreciate the spirit behind WAR, INC., it depresses me to see such a clumsy effort, especially when it will be taken by its targets to reflect the lack of the existence of a serious critique, rather than simply the poor writing, direction, and production of this particular film.<br /><br />There is a critique to be made about the corporatization of war. But poking fun at it in this way diminishes the true atrocity of what is happening. Reminds me a bit of THREE KINGS, which similarly trivializes a genuine cause for concern.",
       "gold": "nuanced_critique",
-      "predicted": "nuanced_critique"
+      "predicted": "blind_hype_or_rant"
     },
     {
       "text": "The Karen Carpenter Story shows a little more about singer Karen Carpenter's complex life. Though it fails in giving accurate facts, and details.<br /><br />Cynthia Gibb (portrays Karen) was not a fine election. She is a good actress , but plays a very naive and sort of dumb Karen Carpenter. I think that the role needed a stronger character. Someone with a stronger personality.<br /><br />Louise Fletcher role as Agnes Carpenter is terrific, she does a great job as Karen's mother.<br /><br />It has great songs, which could have been included in a soundtrack album. Unfortunately they weren't, though this movie was on the top of the ratings in USA and other several countries",
@@ -58,7 +58,7 @@
     {
       "text": "First of all, let's get a few things straight here: a) I AM an anime fan- always has been as a matter of fact (I used to watch Speed Racer all the time in Preschool). b) I DO like several B-Movies because they're hilarious. c) I like the Godzilla movies- a lot.<br /><br />Moving on, when the movie first comes on, it seems like it's going to be your usual B-movie, down to the crappy FX, but all a sudden- BOOM! the anime comes on! This is when the movie goes WWWAAAAAYYYYY downhill.<br /><br />The animation is VERY bad & cheap, even worse than what I remember from SPEED RACER, for crissakes! In fact, it's so cheap, one of the few scenes from the movie I \"vividly\" remember is when a bunch of kids run out of a school... & it's the same kids over & over again! The FX are terrible, too; the dinosaurs look worse than Godzilla. In addition, the transition to live action to animation is unorganized, the dialogue & voices(especially the English dub that I viewed) was horrid & I was begging my dad to take the tape out of the DVD/ VHS player; The only thing that kept me surviving was cracking out jokes & comments like the robots & Joel/Mike on MST3K (you pick the season). Honestly, this is the only way to barely enjoy this movie & survive it at the same time.<br /><br />Heck, I'm planning to show this to another fellow otaku pal of mine on Halloween for a B-Movie night. Because it's stupid, pretty painful to watch & unintentionally hilarious at the same time, I'm giving this movie a 3/10, an improvement from the 0.5/10 I was originally going to give it.<br /><br />(According to my grading scale: 3/10 means Pretty much both boring & bad. As fun as counting to three unless you find a way to make fun of it, then it will become as fun as counting to 15.)",
       "gold": "blind_hype_or_rant",
-      "predicted": "nuanced_critique"
+      "predicted": "blind_hype_or_rant"
     },
     {
       "text": "Set in a dystopian future, society is divided into rigid factions until a young rebel discovers a hidden truth about the government. [Review #13]",
@@ -78,7 +78,7 @@
     {
       "text": "How this film could be classified as Drama, I have no idea. If I were John Voight and Mary Steenburgen, I would be trying to erase this from my CV. It was as historically accurate as Xena and Hercules. Abraham and Moses got melded into Noah. Lot, Abraham's nephew, Lot, turns up thousands of years before he would have been born. Canaanites wandered the earth...really? What were the scriptwriters thinking? Was it just ignorance (\"I remember something about Noah and animals, and Lot and Canaanites and all that stuff from Sunday School\") or were they trying to offend the maximum number of people on the planet as possible- from Christians, Jews and Muslims, to historians, archaeologists, geologists, psychologists, linguists ...as a matter of fact, did anyone not get offended? Anyone who had even a modicum of taste would have winced at this one!",
       "gold": "factual_summary_recap",
-      "predicted": "nuanced_critique"
+      "predicted": "blind_hype_or_rant"
     }
   ]
 }
